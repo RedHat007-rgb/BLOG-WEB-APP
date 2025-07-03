@@ -1,1 +1,1 @@
-console.log("Blog-app");
+console.log("Blog-WEB-APP");
