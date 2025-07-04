@@ -1,17 +1,19 @@
 import express from "express";
 import dotenv from "dotenv";
 import { dbConnect } from "./db";
+import { comments, createBlog, createTable } from "./models";
+import { router } from "./routes";
 dotenv.config();
 const PORT = process.env.PORT || 5000;
 const app = express();
-if (!process.env.PG_URL) {
-  throw new Error("PLease check the connection string");
-}
-const PgUrl: any = process.env.PG_URL;
-
+app.use(express.json());
+app.use("/api/v1", router);
 const connect = async () => {
   try {
-    await dbConnect(PgUrl);
+    await dbConnect();
+    await createTable();
+    await createBlog();
+    await comments();
     app.listen(PORT, () => {
       console.log(`connected to PORT ${PORT}`);
     });
